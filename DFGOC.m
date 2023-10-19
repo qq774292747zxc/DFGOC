@@ -1,4 +1,5 @@
 function [idx, obj, converge] = DFGOC(X, XTX, XTX_inv, W, alpha, beta, lambd, miu, c, L_dat, L_fea, m)
+% https://github.com/qq774292747zxc/DFGOC
 % the running code of DFGOC
 % X: the data matrix which is n * d 
 % XT: the transpose of X
@@ -40,9 +41,9 @@ for iter_step = 2:maxIter
     vXTGFT = diag(v) * X' * G * F';
     t1 = XTLX + lambd*eye(d) + diag(v)*XTX*diag(v); %eye(d) + miu*eye(d)
     A = XTX_inv * t1;
-    B = beta * L_fea + miu*eye(c);
+    B = beta * L_fea + miu*eye(c);  % ensure positive definitiveness
     C = XTX_inv * vXTGFT;
-    %W = lypa(A, B, -C);
+    % W = lypa(A, B, -C);
     W = sylvester(A, B, C);
     
     % update v
